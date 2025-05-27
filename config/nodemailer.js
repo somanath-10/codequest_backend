@@ -1,12 +1,14 @@
-const nodemailer = require('nodemailer');
-require("dotenv").config();
+import nodemailer from 'nodemailer';
+import dotenv from "dotenv"
+
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  service: process.env.MAIL_HOST,
+  host: process.env.MAIL_HOST,
     auth:{
             user:process.env.MAIL_USER,
             pass:process.env.MAIL_PASS
     }
 });
 
-module.exports = transporter;
+export default transporter

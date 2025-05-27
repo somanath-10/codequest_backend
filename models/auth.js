@@ -1,32 +1,45 @@
 import mongoose from "mongoose";
- const userschema=mongoose.Schema({
-    name:{
-      type:String,
-      required:true},
-    email:{
-      type:String,
-      required:true
-   },
-    password:{
-      type:String,
-      required:true
-   },
-    about:{
-      
-      type:String
-   },
-    tags:{
-      type:[String]
-   },
-  joinedon:{
-      type:Date,
-      default:Date.now
-    },
-  
-  lastPasswordReset: Date,
 
-  otp: String,
-  otpExpiresAt: Date,
- })
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true // optional: removes whitespace
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,         // ✅ Ensures emails are unique
+    lowercase: true,      // ✅ Normalize emails
+    trim: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  about: {
+    type: String,
+    default: ""
+  },
+  tags: {
+    type: [String],
+    default: []
+  },
+  joinedOn: {
+    type: Date,
+    default: Date.now
+  },
 
- export default mongoose.model("User",userschema)
+  // 🔐 Password Reset OTP Fields
+  lastPasswordReset: {
+    type: Date
+  },
+  otp: {
+    type: String
+  },
+  otpExpiresAt: {
+    type: Date
+  }
+});
+
+export default mongoose.model("User", userSchema);
