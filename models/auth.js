@@ -18,7 +18,15 @@ import mongoose from "mongoose";
     tags:{
       type:[String]
    },
-    joinedon:{type:Date,default:Date.now}
+  joinedon:{
+      type:Date,
+      default:Date.now
+    },
+  
+  lastPasswordReset: Date,
+
+  otp: String,
+  otpExpiresAt: Date,
  })
 
  export default mongoose.model("User",userschema)
