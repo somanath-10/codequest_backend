@@ -22,7 +22,7 @@ export const requestOtp = async (req, res) => {
         await user.save();
 
         await transporter.sendMail({
-            from: 'somanathr1006@gmail.com',
+            from: 'somanathr2004@gmail.com',
             to: email,
             subject: 'Your Password Reset OTP',
             text: `Your OTP is: ${otp}. It will expire in 10 minutes.`,

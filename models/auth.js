@@ -1,5 +1,15 @@
 import mongoose from "mongoose";
 
+const loginSchema = new mongoose.Schema({
+  browser: String,
+  os: String,
+  deviceType: String,
+  ip: String,
+  time: Date,
+});
+
+
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -9,8 +19,8 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,         // ✅ Ensures emails are unique
-    lowercase: true,      // ✅ Normalize emails
+    unique: true,         
+    lowercase: true,      
     trim: true
   },
   password: {
@@ -29,7 +39,7 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-
+  loginHistory: [loginSchema],
   // 🔐 Password Reset OTP Fields
   lastPasswordReset: {
     type: Date
@@ -43,3 +53,4 @@ const userSchema = new mongoose.Schema({
 });
 
 export default mongoose.model("User", userSchema);
+
