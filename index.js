@@ -18,8 +18,6 @@ import passport from './config/passport.js'
 import googleAuthRoutes from './routes/googleAuth.js'
 import publicChatRoutes from "./routes/PublicChat.js";
 
-
-
 const app = express();
 dotenv.config();
 app.use(express.json({ limit: "30mb", extended: true }))
