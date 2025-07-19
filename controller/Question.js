@@ -1,19 +1,52 @@
 import Question from "../models/Question.js";
 import mongoose from "mongoose";
 
+import User from "../models/auth.js";
+
 export const Askquestion = async (req, res) => {
-    const postquestiondata = req.body;
-    const userid = req.userid;
-    const postquestion = new Question({ ...postquestiondata, userid })
-    try {
-        await postquestion.save();
-        res.status(200).json("Posted a question successfully");
-    } catch (error) {
-        console.log(error)
-        res.status(404).json("couldn't post a new question");
-        return
+  const postquestiondata = req.body;
+  const userid = req.userid;
+
+  try {
+    const user = await User.findById(userid);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const subscription = user.subscription || { plan: "Free", dailyLimit: 1 };
+
+    const today = new Date().toDateString();
+    const lastReset = user.subscription?.lastResetDate?.toDateString();
+
+    // Reset daily count if it's a new day
+    if (today !== lastReset) {
+      user.subscription.questionsPostedToday = 0;
+      user.subscription.lastResetDate = new Date();
     }
+
+    // Check if limit exceeded
+    if (
+      user.subscription.questionsPostedToday >=
+      (user.subscription.dailyLimit ?? 1)
+    ) {
+      return res
+        .status(200)
+        .json({dailylimit:false,success:false, message: "Daily question limit reached for your plan." });
+    }
+
+    // Post question
+    const postquestion = new Question({ ...postquestiondata, userid });
+    await postquestion.save();
+
+    // Update count
+    user.subscription.questionsPostedToday += 1;
+    await user.save();
+
+    res.status(200).json("Posted a question successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("Couldn't post a new question");
+  }
 };
+
 
 export const getallquestion = async (req, res) => {
     try {

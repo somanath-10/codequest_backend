@@ -1,7 +1,7 @@
 import User from'../models/auth.js';
 import transporter from '../config/nodemailer.js';
 import bcrypt from "bcryptjs"
-
+import jwt from 'jsonwebtoken';
 export const requestOtp = async (req, res) => {
     try{
         const { email } = req.body;
@@ -51,8 +51,20 @@ export  const verifyOtp = async (req, res) => {
   if (user.otp !== otp || new Date() > user.otpExpiresAt) {
     return res.status(400).json({ message: 'Invalid or expired OTP.' });
   }
+          const token = jwt.sign({ email: user.email, id: user._id }, process.env.JWT_SECRET, { expiresIn: "50h" });
+          user.token = token;
+          const options={
+              expires:new Date(Date.now()+3*24*60*60*1000),
+              httpOnly:true,
+          }
+          return res.cookie("token",token,options).status(200).json({
+              success:true,
+              token,
+              existingUser:user,
+              message:"cookie created successfully"
+          })
 
-  res.json({success:true, message: 'OTP verified. You can now reset your password.' });
+  // res.json({success:true, message: 'OTP verified. You can now reset your password.' });
 };
 
 export const resetPassword = async (req, res) => {

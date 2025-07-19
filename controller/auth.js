@@ -7,9 +7,11 @@ import requestIp from 'request-ip';
 
 export const login = async (req, res) => {
     const { email, password } = req.body;
+    console.log("email",email);
+    console.log("pass",password);
 
     try {
-        const existingUser = await users.findOne({ email });
+        const existingUser = await users.findOne({ email }).populate("friends");
         if (!existingUser) {
             return res.status(404).json({ message: 'User does not exist' });
         }
@@ -18,6 +20,8 @@ export const login = async (req, res) => {
         if (!isPasswordCorrect) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
+
+        console.log("first")
 
 const parser = new UAParser(req.headers['user-agent']);
 const ua = parser.getResult();
@@ -30,7 +34,7 @@ const clientIp = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.rem
 
         const now = new Date();
         const currentHour = now.getHours();
-
+console.log("second")
         // Store login history (optional: create a subdocument or array in user schema)
         if (!existingUser.loginHistory) existingUser.loginHistory = [];
         existingUser.loginHistory.push({
@@ -44,6 +48,7 @@ const clientIp = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.rem
 
         // Handle conditions:
         if (browser === 'Chrome') {
+            console.log("third")
             // Send OTP to email
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
             const otpExpiresAt = new Date(now.getTime() + 10 * 60 * 1000); // 10 mins
@@ -66,19 +71,44 @@ const clientIp = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.rem
                 message: 'OTP sent to your email. Please verify.',
             });
         }
-
+            console.log(existingUser);
+        console.log("first")
         if (browser === 'Edge' || rawUserAgent?.includes("PostmanRuntime")) {
+            console.log("second")
             // Allow login directly
-            const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-            return res.status(200).json({ result: existingUser, token });
+            const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: "50h" });
+            // return res.status(200).json({success:true, result: existingUser, token });
+                            existingUser.token = token;
+        const options={
+            expires:new Date(Date.now()+3*24*60*60*1000),
+            httpOnly:true,
         }
+            return res.cookie("token",token,options).status(200).json({
+            success:true,
+            token,
+            existingUser,
+            message:"cookie created successfully"
+        })
+        }
+
 
         if (deviceType === 'mobile') {
             if (currentHour >= 10 && currentHour < 13) {
-                const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-                return res.status(200).json({ result: existingUser, token });
+                const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: "50h" });
+                // return res.status(200).json({success:true, result: existingUser, token });
+                existingUser.token = token;
+                const options={
+                    expires:new Date(Date.now()+3*24*60*60*1000),
+                    httpOnly:true,
+                }
+            return res.cookie("token",token,options).status(200).json({
+            success:true,
+            token,
+            existingUser,
+            message:"cookie created successfully"
+        })
             } else {
-                return res.status(403).json({ message: 'Mobile login allowed only from 10 AM to 1 PM' });
+                return res.status(403).json({success:false, message: 'Mobile login allowed only from 10 AM to 1 PM' });
             }
         }
 
@@ -86,7 +116,7 @@ const clientIp = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.rem
         return res.status(403).json({ message: 'Login not allowed from this device/browser' });
 
     } catch (error) {
-        console.error(error);
+        console.log(error.message);
         return res.status(500).json({ message: error.message});
     }
 };
