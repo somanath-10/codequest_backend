@@ -6,7 +6,7 @@ const auth=(req,res,next)=>{
 console.log(token);
         let decodedata=jwt.verify(token,process.env.JWT_SECRET)
         console.log("decoded",decodedata);
-        req.userid=decodedata?.id;
+        req.userid=decodedata?._id;
         next();
     } catch (error) {
         console.log("error in middle ware",error.message)
