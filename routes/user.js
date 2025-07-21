@@ -20,7 +20,7 @@ router.get("/", auth, async (req, res) => {
   res.json({ users });
 });
 
-router.get("/getuserdetails",async(req,res)=>{
+router.post("/getuserdetails",async(req,res)=>{
     const {userid} = req.body;
     const existingUser = await User.findOne({_id:userid});
     return res.status(200).json({
