@@ -22,10 +22,10 @@ router.get("/", auth, async (req, res) => {
 
 router.get("/getuserdetails",async(req,res)=>{
     const {userid} = req.body;
-    const userdetails = await User.findOne({_id:userid});
+    const existingUser = await User.findOne({_id:userid});
     return res.status(200).json({
       success:true,
-      userdetails
+      existingUser
     })
 })
 
