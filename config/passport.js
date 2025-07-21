@@ -24,7 +24,8 @@ passport.use(
       console.log("int password",profile)
       try {
         console.log("first")
-        let existingUser = await User.findOne({ googleId: profile.id });
+
+        let existingUser = await User.findOne({ googleId: profile.id }) || await User.findOne({email:profile.email});
         if (existingUser){
          const parser = new UAParser(req.headers['user-agent']);
 const ua = parser.getResult();
