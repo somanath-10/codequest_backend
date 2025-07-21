@@ -20,4 +20,13 @@ router.get("/", auth, async (req, res) => {
   res.json({ users });
 });
 
+router.get("/getuserdetails",async(req,res)=>{
+    const userid = req.body;
+    const userdetails = await User.findOne({id:userid});
+    return res.status(200).json({
+      success:true,
+      userdetails
+    })
+})
+
 export default router
