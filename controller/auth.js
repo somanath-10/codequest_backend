@@ -143,7 +143,7 @@ export const signup = async (req, res) => {
     } catch (error) {
         return res.status(409).json({
             success:false,
-            message:"Already User is registered try to login in"
+            message:"error in signup please try again after a while"
         })
     }
 }
