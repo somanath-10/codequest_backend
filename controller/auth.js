@@ -141,7 +141,9 @@ export const signup = async (req, res) => {
         )
         res.status(200).json({ result: newuser, token });
     } catch (error) {
-        res.status(500).json("something went wrong...")
-        return
+        return res.status(401).json({
+            success:false,
+            message:"Already User is registered try to login in"
+        })
     }
 }
