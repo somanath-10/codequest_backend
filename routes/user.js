@@ -22,7 +22,7 @@ router.get("/", auth, async (req, res) => {
 
 router.post("/getuserdetails",async(req,res)=>{
     const {userid} = req.body;
-    const existingUser = await User.findOne({_id:userid});
+    const existingUser = await User.findOne({_id:userid}).populate("friends");
     return res.status(200).json({
       success:true,
       existingUser
