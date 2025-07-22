@@ -19,14 +19,14 @@ import googleAuthRoutes from './routes/googleAuth.js'
 import publicChatRoutes from "./routes/PublicChat.js";
 
 const app = express();
-dotenv.config();
-app.use(express.json({ limit: "30mb", extended: true }))
-app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cors(
     {
           origin: 'https://codequest-iota.vercel.app',
     }
 ));
+dotenv.config();
+app.use(express.json({ limit: "30mb", extended: true }))
+app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(
     fileUpload({ 
         useTempFiles:true,                    
