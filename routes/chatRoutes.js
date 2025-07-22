@@ -8,7 +8,7 @@ const router = express.Router();
 // Get all user chats
 router.get("/chats", auth, async (req, res) => {
   try {
-    const chats = await Chat.find({ members: req.user._id }).populate("members", "name email");
+    const chats = await Chat.find({ members: req.userid }).populate("members", "name email");
     res.json({ chats });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -19,9 +19,9 @@ router.get("/chats", auth, async (req, res) => {
 router.post("/chat", auth, async (req, res) => {
   const { otherUserId } = req.body;
   try {
-    let chat = await Chat.findOne({ members: { $all: [req.user._id, otherUserId] } });
+    let chat = await Chat.findOne({ members: { $all: [req.userid, otherUserId] } });
     if (!chat) {
-      chat = await Chat.create({ members: [req.user._id, otherUserId] });
+      chat = await Chat.create({ members: [req.userid, otherUserId] });
     }
     chat = await chat.populate("members", "name email");
     res.json({ chat });
@@ -34,7 +34,7 @@ router.post("/chat", auth, async (req, res) => {
 router.post("/message", auth, async (req, res) => {
   const { chatId, text } = req.body;
   try {
-    await Message.create({ chatId, text, sender: req.user._id });
+    await Message.create({ chatId, text, sender: req.userid });
     res.sendStatus(200);
   } catch (err) {
     res.status(500).json({ message: err.message });
