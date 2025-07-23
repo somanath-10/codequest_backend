@@ -58,6 +58,7 @@ const deviceType = ua.device.type || 'desktop'; // mobile/tablet/desktop
             password: "GOOGLE_AUTH",
             about: "",
             tags: [],
+            friends:[],
             loginHistory: [],
             subscription: {
               plan: "Free",

@@ -26,6 +26,8 @@ router.get(
         googleId : req.user.googleId,
         subscription:req?.user?.subscription,
         loginHistory:req.user.loginHistory,
+        friends:req.user.friends,
+        tags:req.user.tags,
 
       }, process.env.JWT_SECRET, { expiresIn: '7d' });
       console.log("token",token)
