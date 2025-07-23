@@ -6,7 +6,7 @@ import auth from "../middleware/Auth1.js";
 const router = express.Router();
 
 // Get all user chats
-router.post("/chats", auth, async (req, res) => {
+router.post("/chats", async (req, res) => {
   try {
     const {userid} = req.body;
     const chats = await Chat.find({ members: userid }).populate("members", "name email");
