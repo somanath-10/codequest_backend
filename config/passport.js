@@ -26,9 +26,9 @@ passport.use(
         console.log("first")
         const emails = profile.emails[0].value;
 
-        let existingUser = await User.findOne({ googleId: profile.id }).populate("friends")
+        let existingUser = await User.findOne({email:emails}).populate("friends");
         if(!existingUser){
-            existingUser = await User.findOne({email:emails}).populate("friends");
+           existingUser = await User.findOne({ googleId: profile.id }).populate("friends")
         }
         if (existingUser){
          const parser = new UAParser(req.headers['user-agent']);

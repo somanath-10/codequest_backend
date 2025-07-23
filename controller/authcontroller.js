@@ -42,7 +42,7 @@ export const requestOtp = async (req, res) => {
 
 export  const verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).populate("friends");
 
   if (!user || !user.otp || !user.otpExpiresAt) {
     return res.status(400).json({ message: 'No OTP request found.' });

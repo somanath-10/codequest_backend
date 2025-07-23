@@ -8,7 +8,7 @@ const auth = async (req, res, next) => {
   const token = authHeader.split(" ")[1];
   try {
     const decoded = jwt.verify(token, "somu"); // Replace with .env value
-    const user = await User.findById(decoded.id);
+    const user = await User.findById(decoded.id).populate("friends");
     if (!user) return res.status(401).json({ message: "User not found" });
 
     req.user = user;
