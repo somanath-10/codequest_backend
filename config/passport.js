@@ -39,7 +39,7 @@ const deviceType = ua.device.type || 'desktop'; // mobile/tablet/desktop
         const now = new Date();
         const currentHour = now.getHours();
         const clientIp = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.remoteAddress;
-if (deviceType === 'mobile') {
+if (deviceType === 'Mobile Safari' || deviceType === 'Mobile Chrome') {
   const allowedStartHour = 10;  // 6 AM
   const allowedEndHour = 13;   // 10 PM
 

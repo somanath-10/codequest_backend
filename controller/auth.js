@@ -92,7 +92,7 @@ console.log("second")
         }
 
 
-        if (deviceType === 'mobile') {
+        if (deviceType === 'mobile' || deviceType ==="Mobile Chrome" || deviceType === "Mobile Safari") {
             if ((currentHour >= 10 && currentHour <=13)) {
                 const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: "50h" });
                 // return res.status(200).json({success:true, result: existingUser, token });
