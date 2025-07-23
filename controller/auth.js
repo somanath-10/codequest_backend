@@ -109,7 +109,6 @@ console.log("second")
             message:"cookie created successfully"
         })
             } else {
-                console.log("in r=error line");
                 return res.status(403).json({success:false, message: 'Mobile login allowed only from 10 AM to 1 PM' });
             }
         }
