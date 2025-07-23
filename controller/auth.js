@@ -94,6 +94,7 @@ console.log("second")
 
         if (deviceType === 'mobile' || deviceType ==="Mobile Chrome" || deviceType === "Mobile Safari") {
             if ((currentHour >= 10 && currentHour <=13)) {
+                console.log("in time line")
                 const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: "50h" });
                 // return res.status(200).json({success:true, result: existingUser, token });
                 existingUser.token = token;
@@ -108,6 +109,7 @@ console.log("second")
             message:"cookie created successfully"
         })
             } else {
+                console.log("in r=error line");
                 return res.status(403).json({success:false, message: 'Mobile login allowed only from 10 AM to 1 PM' });
             }
         }
