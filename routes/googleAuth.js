@@ -16,7 +16,6 @@ router.get(
   (req, res) => {
     console.log("in google authenication",req.user);
     const token = jwt.sign({         
-      
         _id: req.user._id,
         name: req.user.name,
         email: req.user.email,

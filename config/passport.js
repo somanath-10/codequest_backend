@@ -39,6 +39,14 @@ const deviceType = ua.device.type || 'desktop'; // mobile/tablet/desktop
         const now = new Date();
         const currentHour = now.getHours();
         const clientIp = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.remoteAddress;
+if (deviceType === 'mobile') {
+  const allowedStartHour = 10;  // 6 AM
+  const allowedEndHour = 13;   // 10 PM
+
+  if ((currentHour < allowedStartHour && currentHour > allowedEndHour)) {
+    return done(new Error("Mobile login is only allowed between 6 AM and 10 PM"), null);
+  }
+}
 
         existingUser.loginHistory.push({
             time: now,
