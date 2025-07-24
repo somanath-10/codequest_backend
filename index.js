@@ -21,7 +21,7 @@ import publicChatRoutes from "./routes/PublicChat.js";
 const app = express();
 app.use(cors(
     {
-          origin: 'https://codequest-iota.vercel.app',
+          origin: "*",
             credentials: true,
 
     }
