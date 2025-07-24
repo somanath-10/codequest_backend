@@ -32,7 +32,12 @@ router.get(
       console.log("token",token)
       console.log("in last words")
       console.log("web url",process.env.WEB_URL);
-        const redirectUrl = process.env.WEB_URL + `/auth/callback?token=${token}`;
+      res.cookie("token", token, {
+  httpOnly: false,       // or true if you don’t need to read it in JS
+  secure: true,          // required on HTTPS
+  sameSite: "None"       // needed for cross-origin
+});
+        const redirectUrl = process.env.WEB_URL + `/auth/callback`;
     console.log("👉 Redirecting to:", redirectUrl);
 
     res.status(302).setHeader("Location", redirectUrl);
