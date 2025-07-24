@@ -11,7 +11,7 @@ router.get("/google", passport.authenticate("google", { scope: ["profile", "emai
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: '/login',    failureMessage: true  // tells Passport to put Google’s error on req.session.messages
+  passport.authenticate("google", { failureRedirect: '/',    failureMessage: true  // tells Passport to put Google’s error on req.session.messages
  }),
   (req, res) => {
     console.log("in google authenication",req.user);
