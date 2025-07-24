@@ -9,45 +9,62 @@ const router = express.Router();
 
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
-router.get(
-  "/google/callback",
-  passport.authenticate("google", { failureRedirect: '/',    failureMessage: true  // tells Passport to put Google’s error on req.session.messages
- }),
-  (req, res) => {
-    console.log("in google authenication",req.user);
-    const token = jwt.sign({         
-        _id: req.user._id,
-        name: req.user.name,
-        email: req.user.email,
-        avatar: req.user.avatar,
-        plan: req.user.subscription?.plan,
-        dailyLimit: req.user.subscription?.dailyLimit,
-        googleId : req.user.googleId,
-        subscription:req?.user?.subscription,
-        loginHistory:req.user.loginHistory,
-        friends:req.user.friends,
-        tags:req.user.tags,
+// router.get(
+//   "/google/callback",
+//   passport.authenticate("google", { failureRedirect: '/',    failureMessage: true  // tells Passport to put Google’s error on req.session.messages
+//  }),
+//   (req, res) => {
+//     console.log("in google authenication",req.user);
+//     const token = jwt.sign({         
+//         _id: req.user._id,
+//         name: req.user.name,
+//         email: req.user.email,
+//         avatar: req.user.avatar,
+//         plan: req.user.subscription?.plan,
+//         dailyLimit: req.user.subscription?.dailyLimit,
+//         googleId : req.user.googleId,
+//         subscription:req?.user?.subscription,
+//         loginHistory:req.user.loginHistory,
+//         friends:req.user.friends,
+//         tags:req.user.tags,
 
-      }, process.env.JWT_SECRET, { expiresIn: '7d' });
-      console.log("token",token)
-      console.log("in last words")
-      console.log("web url",process.env.WEB_URL);
-res.cookie("token", token, {
-  httpOnly: false, // if you want to access via JS
-  secure: false,    // required if running over HTTPS
-  sameSite: "None" // required for cross-site cookies
-});
+//       }, process.env.JWT_SECRET, { expiresIn: '7d' });
+//       console.log("token",token)
+//       console.log("in last words")
+//       console.log("web url",process.env.WEB_URL);
+// res.cookie("token", token, {
+//   httpOnly: false, // if you want to access via JS
+//   secure: false,    // required if running over HTTPS
+//   sameSite: "None" // required for cross-site cookies
+// });
 
-// ✅ Clean redirect
+// // ✅ Clean redirect
 
-        const redirectUrl = process.env.WEB_URL + `/auth/callback`;
-    console.log("👉 Redirecting to:", redirectUrl);
+//         const redirectUrl = process.env.WEB_URL + `/auth/callback`;
+//     console.log("👉 Redirecting to:", redirectUrl);
 
-res.redirect(`${process.env.WEB_URL}/auth/callback`);
+// res.redirect(`${process.env.WEB_URL}/auth/callback?token=${token}`);
 
     
+//   }
+// );
+
+router.get(
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: '/' }),
+  (req, res) => {
+    console.log("✅ Reached /google/callback", req.user);
+
+    res.send(`
+      <html><body>
+        <script>
+          window.location.href = "${process.env.WEB_URL}/auth/callback?token=test123";
+        </script>
+      </body></html>
+    `);
   }
 );
+
 
 router.get("/success", (req, res) => {
   res.status(200).json({
