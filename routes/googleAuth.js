@@ -32,23 +32,19 @@ router.get(
       console.log("token",token)
       console.log("in last words")
       console.log("web url",process.env.WEB_URL);
-      res.cookie("token", token, {
-  httpOnly: false,       // or true if you don’t need to read it in JS
-  secure: true,          // required on HTTPS
-  sameSite: "None"       // needed for cross-origin
+res.cookie("token", token, {
+  httpOnly: false, // if you want to access via JS
+  secure: true,    // required if running over HTTPS
+  sameSite: "None" // required for cross-site cookies
 });
+
+// ✅ Clean redirect
+res.redirect(`${process.env.WEB_URL}/auth/callback`);
+
         const redirectUrl = process.env.WEB_URL + `/auth/callback`;
     console.log("👉 Redirecting to:", redirectUrl);
 
-res.send(`
-  <html>
-    <body>
-      <script>
-        window.location.href = "${process.env.WEB_URL}/auth/callback";
-      </script>
-    </body>
-  </html>
-`);
+res.redirect(`${process.env.WEB_URL}/auth/callback`);
 
     
   }
