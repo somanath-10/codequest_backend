@@ -33,6 +33,7 @@ router.get(
       console.log("in last words")
       console.log("web url",process.env.WEB_URL);
     res.redirect(process.env.WEB_URL+`/auth/callback?token=${token}`);
+    return;
   }
 );
 
