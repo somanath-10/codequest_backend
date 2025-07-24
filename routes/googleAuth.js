@@ -34,12 +34,11 @@ router.get(
       console.log("web url",process.env.WEB_URL);
 res.cookie("token", token, {
   httpOnly: false, // if you want to access via JS
-  secure: true,    // required if running over HTTPS
+  secure: false,    // required if running over HTTPS
   sameSite: "None" // required for cross-site cookies
 });
 
 // ✅ Clean redirect
-res.redirect(`${process.env.WEB_URL}/auth/callback`);
 
         const redirectUrl = process.env.WEB_URL + `/auth/callback`;
     console.log("👉 Redirecting to:", redirectUrl);
