@@ -57,16 +57,8 @@ router.get(
 
         const token = jwt.sign({         
         _id: req.user._id,
-        name: req.user.name,
         email: req.user.email,
-        avatar: req.user.avatar,
-        plan: req.user.subscription?.plan,
-        dailyLimit: req.user.subscription?.dailyLimit,
-        googleId : req.user.googleId,
-        subscription:req?.user?.subscription,
-        loginHistory:req.user.loginHistory,
-        friends:req.user.friends,
-        tags:req.user.tags,
+        
 
       }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
