@@ -22,6 +22,8 @@ const app = express();
 app.use(cors(
     {
           origin: 'https://codequest-iota.vercel.app',
+            credentials: true,
+
     }
 ));
 dotenv.config();
