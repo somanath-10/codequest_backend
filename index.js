@@ -24,7 +24,9 @@ const allowedOrigins = [
   "https://codequest-iota.vercel.app", // production
   "http://localhost:3000"              // local dev
 ];
+app.set("trust proxy", 1); // 🔥 Required on Render for secure cookies
 
+app.use(cookieParser());
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -45,7 +47,6 @@ app.use(
 	})
 )
 app.use(bodyParser.json());
-app.use(cookieParser());
 const PORT = process.env.PORT || 5000
 const database_url = process.env.MONGODB_URL
 
