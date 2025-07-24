@@ -17,6 +17,7 @@ import session from "express-session"
 import passport from './config/passport.js'
 import googleAuthRoutes from './routes/googleAuth.js'
 import publicChatRoutes from "./routes/PublicChat.js";
+import cookieParser from "cookie-parser"
 
 const app = express();
 app.use(cors(
@@ -34,6 +35,7 @@ app.use(
 	})
 )
 app.use(bodyParser.json());
+app.use(cookieParser());
 const PORT = process.env.PORT || 5000
 const database_url = process.env.MONGODB_URL
 

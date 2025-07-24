@@ -32,8 +32,12 @@ router.get(
       console.log("token",token)
       console.log("in last words")
       console.log("web url",process.env.WEB_URL);
-    res.redirect(process.env.WEB_URL+`/auth/callback?token=${token}`);
-    return;
+        const redirectUrl = process.env.WEB_URL + `/auth/callback?token=${token}`;
+    console.log("👉 Redirecting to:", redirectUrl);
+
+    res.status(302).setHeader("Location", redirectUrl);
+    res.end(); // 👈 important to end manually
+    
   }
 );
 
