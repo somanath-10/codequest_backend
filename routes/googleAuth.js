@@ -40,7 +40,7 @@ router.get(
         const redirectUrl = process.env.WEB_URL + `/auth/callback`;
     console.log("👉 Redirecting to:", redirectUrl);
 
-res.redirect(`http://localhost:3000/auth/callback`);
+res.redirect(302,`http://localhost:3000/auth/callback`);
     res.end(); // 👈 important to end manually
     
   }
