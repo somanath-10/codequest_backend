@@ -20,11 +20,21 @@ import publicChatRoutes from "./routes/PublicChat.js";
 import cookieParser from "cookie-parser"
 
 const app = express();
-app.use(cors(
-    {
-          origin: 'https://codequest-iota.vercel.app',
+const allowedOrigins = [
+  "https://codequest-iota.vercel.app", // production
+  "http://localhost:3000"              // local dev
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS: " + origin));
     }
-));
+  },
+  credentials: true
+}));
 dotenv.config();
 app.use(express.json({ limit: "30mb", extended: true }))
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
